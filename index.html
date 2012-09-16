@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        .half {
+            width: 50%;
+            float: left;
+        }
+
+        body {
+            padding: 20px;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .clear {
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+
+<h1>EURHUF: <span id="eurhuf"></span></h1>
+
+<div class="half">
+    <form action="#">
+        <fieldset>
+            <legend>EUR > HUF</legend>
+
+            <label for="eh-rate">Rate</label>
+            <input type="text" name="eh-rate" id="eh-rate" disabled="disabled"/>
+            <input type="checkbox" name="eh-lock" id="eh-lock"><br/>
+
+            <label for="eh-eur">EUR</label>
+            <input type="text" name="eh-eur" id="eh-eur"/><br/>
+
+            <label for="eh-huf">HUF</label>
+            <input type="text" name="eh-huf" id="eh-huf" disabled="disabled"/><br/>
+
+        </fieldset>
+    </form>
+
+    <div id="eh-list"></div>
+</div>
+
+<div class="half">
+    <form action="#">
+        <fieldset>
+            <legend>HUF > EUR</legend>
+
+            <label for="he-rate">Rate</label>
+            <input type="text" name="he-rate" id="he-rate" disabled="disabled"/>
+            <input type="checkbox" name="he-lock" id="he-lock"><br/>
+
+            <label for="he-huf">HUF</label>
+            <input type="text" name="he-huf" id="he-huf"/><br/>
+
+            <label for="he-eur">EUR</label>
+            <input type="text" name="he-eur" id="he-eur" disabled="disabled"/><br/>
+        </fieldset>
+    </form>
+
+    <div id="he-list"></div>
+
+</div>
+
+<div class="clear"></div>
+
+<div id="charts"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript">
+    (function () {
+
+        // Charts
+        var myCharts = new EH.Charts();
+        myCharts.draw('#charts');
+
+        //Calculator
+        var MyEHCalculator = new EH.Calculator();
+
+        MyEHCalculator.subscribe(function () {
+            $('#eurhuf').html(MyEHCalculator.rate);
+        });
+
+        MyEHCalculator.refresh();
+
+        MyEHCalculator.subscribe(function () {
+            $('#he-rate, #eh-rate').val(MyEHCalculator.rate);
+        });
+
+        var $eh_huf = $('#eh-huf'),
+            $eh_eur = $('#eh-eur'),
+            $eh_lock = $('#eh-lock'),
+            $eh_rate = $('#eh-rate'),
+
+            $he_huf = $('#he-huf'),
+            $he_eur = $('#he-eur'),
+            $he_lock = $('#he-lock'),
+            $he_rate = $('#he-rate');
+
+        $eh_eur.on('keyup', function () {
+            if ($eh_lock.is(':checked')) {
+                $eh_huf.val(MyEHCalculator.eh($eh_eur.val(), $eh_rate.val()));
+            } else {
+                $eh_huf.val(MyEHCalculator.eh($eh_eur.val()));
+            }
+        });
+
+        $he_huf.on('keyup', function () {
+            if ($he_lock.is(':checked')) {
+                $he_eur.val(MyEHCalculator.he($he_huf.val(), $he_rate.val()));
+            } else {
+                $he_eur.val(MyEHCalculator.he($he_huf.val()));
+            }
+        });
+
+        $eh_lock.on('change', function () {
+            if ($eh_lock.is(':checked')) {
+                $eh_rate.attr('disabled', false);
+            } else {
+                $eh_rate.attr('disabled', true);
+            }
+        });
+
+        $he_lock.on('change', function () {
+            if ($he_lock.is(':checked')) {
+                $he_rate.attr('disabled', false);
+            } else {
+                $he_rate.attr('disabled', true);
+            }
+        });
+
+        // Euro / Huf Lists
+
+        var myEHList = new EH.List('#eh-list');
+        var myHEList = new EH.List('#he-list', 'he', [10000, 30000, 50000, 100000, 150000]);
+    })();
+</script>
+</body>
+</html>
