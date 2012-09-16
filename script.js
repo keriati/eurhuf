@@ -95,7 +95,7 @@
 
         function Constr(container, type, values) {
             var that = this,
-                list = [10, 20, 30, 40, 50, 100, 200, 300, 500, 800, 1000, 1100, 1500];
+                list = [10, 20, 30, 40, 50, 100, 200, 300, 500, 800, 1000, 1100, 1500, 2000, 2100, 2200, 2500, 3000];
 
             this.container = null;
             this.type = type;
