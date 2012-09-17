@@ -18,7 +18,7 @@
                 that = this;
 
             q.success(function (data) {
-                that.rate = parseInt(data.query.results.rate.Rate, 10);
+                that.rate = parseFloat(data.query.results.rate.Rate);
 
                 $(document).trigger('EH/Refresh', that);
 
@@ -32,14 +32,14 @@
 
         function eh(value, rate) {
             if(rate) {
-                return parseInt(value, 10) * parseInt(rate, 10);
+                return parseFloat(value) * parseFloat(rate);
             }
-            return parseInt(value, 10) * this.rate;
+            return parseFloat(value) * this.rate;
         }
 
         function he(value, rate) {
             if(rate) {
-                return parseInt(value, 10) / parseInt(rate, 10);
+                return parseFloat(value) / parseFloat(rate);
             }
             return value / this.rate;
         }
