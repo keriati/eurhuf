@@ -16,6 +16,7 @@
 
             this.intervalID = setInterval(function() {
                 that.refresh();
+                that.startAnim();
             }, this.intervalTime)
         }
 
@@ -25,9 +26,9 @@
 
         function startAnim() {
             var that = this;
-            this.container.find('li:first').remove();
+            this.container.stop().find('li:first').remove();
             this.container.css({marginLeft: 0});
-            this.container.animate({marginLeft: -188}, this.intervalTime, 'linear', function() {that.startAnim()})
+            this.container.animate({marginLeft: -188}, this.intervalTime, 'linear');
         }
 
         function setCalculator(calculator) {

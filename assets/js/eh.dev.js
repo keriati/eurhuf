@@ -7,7 +7,7 @@
 /*!
  * EurHuf Javascript Library
  *
- * build: 33-201209172147
+ * build: 35-201209172210
  */
 (function () {
 
@@ -65,7 +65,6 @@
         }
 
         function setRate(data) {
-            console.log(data);
             this.lastData = data;
             this.rate = parseFloat(data.query.results.rate.Rate);
             this.triggerSubscribes();
@@ -259,6 +258,7 @@
 
             this.intervalID = setInterval(function() {
                 that.refresh();
+                that.startAnim();
             }, this.intervalTime)
         }
 
@@ -268,9 +268,9 @@
 
         function startAnim() {
             var that = this;
-            this.container.find('li:first').remove();
+            this.container.stop().find('li:first').remove();
             this.container.css({marginLeft: 0});
-            this.container.animate({marginLeft: -188}, this.intervalTime, 'linear', function() {that.startAnim()})
+            this.container.animate({marginLeft: -188}, this.intervalTime, 'linear');
         }
 
         function setCalculator(calculator) {
