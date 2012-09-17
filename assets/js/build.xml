@@ -1,0 +1,94 @@
+<project name="EURHUF" default="init" basedir=".">
+
+    <property name="dir.src" location="app"/>
+    <property name="dir.lib" location="lib"/>
+    <property name="dir.tools" location="tools"/>
+
+    <target name="init">
+        <echo message="/----------------------------------------------------------------\"/>
+        <echo message="*                                                                *"/>
+        <echo message="* EURHUF javascript build tasks!                                 *"/>
+        <echo message="* Tasks:                                                         *"/>
+        <echo message="*     ant build    Production version                            *"/>
+        <echo message="*     ant dev      Development version                           *"/>
+        <echo message="*     ant with-doc Generate documentation                        *"/>
+        <echo message="*                                                                *"/>
+        <echo message="\----------------------------------------------------------------/"/>
+    </target>
+
+    <target name="-concat">
+
+        <echo message="Concat files from library..."/>
+
+        <concat destfile="eh.dev.js" fixlastline="yes" encoding="UTF8" outputencoding="UTF8">
+            <!--Plugins-->
+            <filelist dir="${dir.lib}" files="
+            jquery-1.8.1.min.js
+            accounting.js
+            "/>
+
+            <!--Source-->
+            <filelist dir="${dir.src}" files="
+            eh.base.js
+            eh.calculator.js
+            eh.charts.js
+            eh.list.js
+            eh.scroller.js
+            "/>
+        </concat>
+
+    </target>
+
+    <target name="-version">
+        <buildnumber/>
+        <tstamp/>
+        <loadproperties>
+            <file file="build.number"/>
+        </loadproperties>
+
+        <replaceregexp match="@BN@" replace="${build.number}-${DSTAMP}${TSTAMP}" encoding="UTF8">
+            <filelist dir="." files="eh.dev.js"/>
+        </replaceregexp>
+
+    </target>
+
+    <target name="-compress">
+
+        <echo message="Compressing all javascript files with YUI Compressor..."/>
+
+        <apply executable="java" parallel="false" failonerror="true" dest="." force="true">
+
+            <fileset dir=".">
+                <include name="eh.dev.js"/>
+            </fileset>
+            <mapper type="glob" from="*.dev.js" to="*.js"/>
+            <arg line="-jar"/>
+            <arg line="${dir.tools}/yuicompressor-2.4.7.jar"/>
+            <srcfile/>
+            <arg line="-o"/>
+            <targetfile/>
+
+        </apply>
+
+    </target>
+
+    <target name="-copy-dev">
+        <copy file="eh.dev.js" tofile="eh.js"/>
+    </target>
+
+    <target name="-doc">
+        <exec executable="yuidoc">
+            <arg value="."/>
+        </exec>
+    </target>
+
+    <target name="dev" depends="-clean, init, -concat, -version, -copy-dev" />
+    <target name="build" depends="-clean, init, -concat, -version, -compress" />
+    <target name="with-doc" depends="build, -doc" />
+
+    <target name="-clean">
+        <delete file="eh.dev.js"/>
+        <delete file="eh.js"/>
+    </target>
+
+</project>
