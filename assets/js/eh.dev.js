@@ -7,7 +7,7 @@
 /*!
  * EurHuf Javascript Library
  *
- * build: 35-201209172210
+ * build: 37-201210192150
  */
 (function () {
 
@@ -123,7 +123,7 @@
                     name:'Last Day'
                 },
                 {
-                    id:  '7d',
+                    id:  '5d',
                     name:'Last week'
                 },
                 {

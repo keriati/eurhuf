@@ -8,7 +8,7 @@
                     name:'Last Day'
                 },
                 {
-                    id:  '7d',
+                    id:  '5d',
                     name:'Last week'
                 },
                 {

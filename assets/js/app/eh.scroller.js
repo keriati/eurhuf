@@ -25,7 +25,6 @@
         }
 
         function startAnim() {
-            var that = this;
             this.container.stop().find('li:first').remove();
             this.container.css({marginLeft: 0});
             this.container.animate({marginLeft: -188}, this.intervalTime, 'linear');
